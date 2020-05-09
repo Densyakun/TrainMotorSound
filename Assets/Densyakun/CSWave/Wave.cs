@@ -547,6 +547,19 @@ namespace Densyakun.CSWave
             new NotCalculableWaveException();
         }
 
+        public void chop(double frequency, double duty)
+        {
+            double a;
+            for (var n1 = 0; n1 < channels; n1++)
+                for (var n = n1; n < wave.Length; n += channels)
+                {
+                    a = (double)(n - n1) * frequency / samplerate / channels;
+                    a -= Math.Floor(a);
+                    if (duty <= a)
+                        wave[n] = 0d;
+                }
+        }
+
 
 
         public void generateSawtooth(double frequency)
